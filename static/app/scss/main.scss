@@ -5,20 +5,13 @@
 		flex-direction: column;
 		gap: 15px;
 	}
-	&__error-block {
+	&__body {
+		max-width: 400px;
 		padding: 30px 15px;
 		border-radius: 7px;
 		background-color: #4d5146;
 	}
-	&__error-text {
-		color: white
-	}
-	&__price-block {
-		padding: 30px 15px;
-		border-radius: 7px;
-		background-color: #4d5146;
-	}
-	&__price-text {
+	&__text {
 		color: white
 	}
 }

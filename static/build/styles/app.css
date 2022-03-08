@@ -202,15 +202,10 @@ p, h1, h2, h3, h4, h5, h6 {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 15px; }
-  .info__error-block {
+  .info__body {
+    max-width: 400px;
     padding: 30px 15px;
     border-radius: 7px;
     background-color: #4d5146; }
-  .info__error-text {
-    color: white; }
-  .info__price-block {
-    padding: 30px 15px;
-    border-radius: 7px;
-    background-color: #4d5146; }
-  .info__price-text {
+  .info__text {
     color: white; }
