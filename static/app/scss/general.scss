@@ -1,0 +1,97 @@
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  text-align: center;
+  min-height: 48px;
+  transition: all 0.3s;
+  &.btn-white {
+    color: $primary;
+    background-color: $white;
+    &:hover {
+      color: $white;
+      background-color: $primary;
+    }
+  }
+}
+
+.slider-arrow {
+  pointer-events: auto;
+  height: 48px;
+  width: 48px;
+  background-color: rgba(232, 159, 113, 0.3);
+  border-radius: 50%;
+  color: $primary;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+  &__prev {
+    &::before {
+      transform: rotate(90deg);
+    }
+  }
+  &__next {
+    &::before {
+      transform: rotate(-90deg);
+    }
+  }
+  &:hover {
+    background-color: rgba(232, 159, 113, 1);
+    color: $white;
+  }
+  &_white {
+    box-shadow: 0px 4px 14px 1px rgba(0, 0, 0, 0.16);
+    background-color: $white;
+    &:hover {
+      background-color: $primary;
+      color: $white;
+    }
+  }
+}
+
+.swiper-bullets {
+  display: flex;
+  flex-wrap: wrap;
+}
+.swiper-bullet {
+  cursor: pointer;
+  height: 27px;
+  flex: 0 0 27px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0;
+  &:not(:last-child) {
+    margin-right: 12px;
+  }
+  &::after {
+    content: '';
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: $swiperBullet;
+    transition: background-color 0.3s;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 1px solid $primary;
+    transform: scale(0);
+    transition: transform 0.3s;
+  }
+}
+.swiper-bullet-active {
+  &::after {
+    background-color: $primary;
+  }
+  &::before {
+    transform: scale(1);
+  }
+}
