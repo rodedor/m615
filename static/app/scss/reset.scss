@@ -12,12 +12,13 @@
   @include reset;
   font-size: $fontsize;
   color: $secondary;
-  font-family: $fontfamily;
+  //font-family: $fontfamily;
   box-sizing: border-box;
 }
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+	background-color: #fffcf3;
 }
 img, picture, video, canvas, svg {
   display: block;

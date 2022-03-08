@@ -1,0 +1,24 @@
+.info {
+	margin: 25px;
+	&__container {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+	&__error-block {
+		padding: 30px 15px;
+		border-radius: 7px;
+		background-color: #4d5146;
+	}
+	&__error-text {
+		color: white
+	}
+	&__price-block {
+		padding: 30px 15px;
+		border-radius: 7px;
+		background-color: #4d5146;
+	}
+	&__price-text {
+		color: white
+	}
+}

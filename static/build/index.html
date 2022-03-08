@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="module" src="js/app.js"></script>
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Вася</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__container container">
+        <h1 class="header__title">Табель для сотрудника "Вася"</h1>
+      </div>
+    </header>
+    <main class="page">
+      <div class="info">
+        <div class="info__container container">
+          <div class="info__error-block">
+            <div class="info__error-text">Ошибка выполнения запроса</div>
+            <div class="info__error-text">Сообщение ошибки:</div>
+          </div>
+          <div class="info__price-block">
+            <div class="info__price-text">Оплата за час: 125р</div>
+            <div class="info__price-text">Оплата за 8 часов: 1000р</div>
+          </div>
+        </div>
+      </div>
+      <div class="table__container container">
+        <table class="table">
+          <thead class="table__header">
+            <tr class="table__header-row">
+              <th class="table__header-col">Дата</th>
+              <th class="table__header-col">Сумма</th>
+              <th class="table__header-col">Примечание</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            <tr class="table__body-row">
+              <td class="table__body-col">01.01.2000</td>
+              <td class="table__body-col">1 000</td>
+              <td class="table__body-col"></td>
+            </tr>
+            <tr class="table__body-row">
+              <td class="table__body-col">02.01.2000</td>
+              <td class="table__body-col">900</td>
+              <td class="table__body-col">Мелкими</td>
+            </tr>
+            <tr class="table__body-row">
+              <td class="table__body-col">03.01.2000</td>
+              <td class="table__body-col">10 000</td>
+              <td class="table__body-col">Аванс</td>
+            </tr>
+            <tr class="table__body-row">
+              <td class="table__body-col">Остаток:</td>
+              <td class="table__body-col" colspan="2">9 999р.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>
