@@ -1,34 +1,16 @@
-<?php	// Выясняем для кого выводить данные, его имя, ставку
-$path = pathinfo($_SERVER['REQUEST_URI']);
-$link = str_replace("/","",$path['dirname']);
+<?php
+
+$id = 0;		// id работника
+$pph = 0;		// Ставка работника
+$name = "Вася";		// ну так, на всякий случай
+$sum_hours = 0;		// Сумма часов по табелю
+$sum_paid = 0;		// Итого выдано
+$timesheet[0] = [0,0,0];// Табель отработанного времени
+$paid[0] = [0,0,0];	// Все выплаты
+
 $path = pathinfo(__FILE__);
 $dir = $path['dirname'];
-//echo $dir, "<br>";
-include_once "$dir/conn.php";
-date_default_timezone_set('Europe/Moscow');
-$sql = "SELECT `id` FROM `worker` WHERE `link`=\"$link\";";
-if ($result = $mysqli->query($sql)) {
-    $row = $result->fetch_array(MYSQLI_NUM);
-    $id = $row[0];		// id работника
-    $result->free();}
-else {
-    echo("Ошибка выполнения запроса");
-    $mysqli->close();}
-/*
-echo "<br>link=$link<br>";
-echo $sql;
-echo $id;
-*/
-$sql = "SELECT `name`,`pph` FROM `worker` WHERE `id`=$id;";
-$name = "Вася";		// ну так, на всякий случай
-if ($result = $mysqli->query($sql)) {
-    $row = $result->fetch_array(MYSQLI_NUM);
-    $name = $row[0];	// Имя работника
-    $pph = $row[1];		// Ставка его
-    $result->free();}
-else {
-    echo("Ошибка выполнения запроса");}
-
+include_once "$dir/maincode.php";
 ?>
 
 <!DOCTYPE html>
@@ -43,20 +25,13 @@ else {
 </head>
 
 <body>
-    <header class="header">
+  <header class="header">
     <div class="header__container container">
       <h1 class="header__title">Табель для сотрудника <?php echo $name;?></h1>
     </div>
   </header>
 
-<?php  // Таблица "Табель" тут формируется
-$sql = "SELECT DATE_FORMAT(`timesheet`.`date`,'%d.%m.%Y'), `timesheet`.`time`, `comments`.`comment` FROM `timesheet` "
- . "LEFT JOIN (`worker`,`comments`)"
- . " ON (`timesheet`.`worker_id`=`worker`.`id` AND `timesheet`.`comment_id`=`comments`.`id`) WHERE `worker`.`id`=$id;";
-if ($result = $mysqli->query($sql)) {
-    $sum_hours = 0;
-    echo("
-		<div class='table__container container'>
+  <div class='table__container container'>
     <table class='table'>
     <caption><h2>Табель</h2></caption>
 
@@ -69,8 +44,7 @@ if ($result = $mysqli->query($sql)) {
     </thead>
 
     <tbody class='table__body'>
-    ");
-    while ($row = $result->fetch_array(MYSQLI_NUM)) {
+<?php foreach($timesheet as $row) 
 	echo(" <tr class='table__body-row'>
 	    <td class='table__body-col'>
 	     $row[0]
@@ -81,33 +55,19 @@ if ($result = $mysqli->query($sql)) {
 	    <td class='table__body-col'>
 	     $row[2]
 	    </td>
-	       </tr>");
-	$sum_hours = $sum_hours + $row[1];
-    }
-/*	$sum_text=number_format($sum, 2, '.', ' ');*/
-    echo(" <tr class='table__body-row'>
+	       </tr>"); ?>
+      <tr class='table__body-row'>
 	<td class='table__body-col'>
 	 Всего:
 	</td>
 	<td colspan=2 class='table__body-col text-rigth font-weight-bold'>
-	 $sum_hours
+	 <?php echo $sum_hours; ?>
 	</td>
-           </tr>
+      </tr>
     </tbody>
     </table>
 		</div>
-    ");
-    $result->free();}
-else {
-    echo("<div class='info'>
-        <div class='info__container container'>
-          <div class='info__body'>
-            <div class='info__text'>Ошибка выполнения запроса</div>
-            <div class='info__text'>Сообщение ошибки:'{$mysqli->error}'</div>
-          </div>
-        </div>
-      </div>");}
-?>
+
 <div class='info'>
         <div class='info__container container'>
           <div class='info__body'>
@@ -118,15 +78,8 @@ else {
     </div>
   </div>
 <br>
-<?php	// Таблица "Выдано" тут формируется
-$sql = "SELECT DATE_FORMAT(`paid`.`date`,'%d.%m.%Y'), `paid`.`amount`, `comments`.`comment` FROM `paid` "
- . "LEFT JOIN (`worker`,`comments`)"
- . " ON (`paid`.`worker_id`=`worker`.`id` AND `paid`.`comment_id`=`comments`.`id`) WHERE `worker`.`id`=$id;";
-/*echo "sql=$sql<br>";*/
-if ($result = $mysqli->query($sql)) {
-    $sum_paid = 0;
-    echo("
-		<div class='table__container container'>
+
+  <div class='table__container container'>
     <table class='table'>
     <caption><h2>Табель</h2></caption>
 
@@ -139,8 +92,8 @@ if ($result = $mysqli->query($sql)) {
     </thead>
 
     <tbody class='table__body'>
-    ");
-    while ($row = $result->fetch_array(MYSQLI_NUM)) {
+
+<?php foreach($paid as $row) 
 	echo(" <tr class='table__body-row'>
 	    <td class='table__body-col'>
 	     $row[0]
@@ -151,36 +104,19 @@ if ($result = $mysqli->query($sql)) {
 	    <td class='table__body-col'>
 	     $row[2]
 	    </td>
-	       </tr>");
-	$sum_paid = $sum_paid + $row[1];
-    }
-/*	$sum_text=number_format($sum, 2, '.', ' ');*/
-    echo("
-		<tr class='table__body-row'>
+	       </tr>"); ?>
+	<tr class='table__body-row'>
 	<td class='table__body-col'>
 	 Всего:
 	</td>
 	<td colspan=2 class='table__body-col text-rigth font-weight-bold'>
-	 $sum_paid
+	 <?php echo $sum_paid; ?>
 	</td>
-           </tr>
+        </tr>
 
     </tbody>
     </table>
 		</div>
-    ");
-    $result->free();}
-else {
-    $error = $mysqli->error;
-    echo("<div class='info'>
-        <div class='info__container container'>
-          <div class='info__body'>
-            <p class='info__text'>Ошибка выполнения запроса</p>
-            <p class='info__text'>Сообщение ошибки:'{$mysqli->error}'</p>
-          </div>
-        </div>
-      </div>");}
-?>
 <div class='info'>
         <div class='info__container container'>
           <div class='info__body'>
