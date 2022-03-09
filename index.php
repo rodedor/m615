@@ -56,6 +56,7 @@ $sql = "SELECT DATE_FORMAT(`timesheet`.`date`,'%d.%m.%Y'), `timesheet`.`time`, `
 if ($result = $mysqli->query($sql)) {
     $sum_hours = 0;
     echo("
+		<div class='table__container container'>
     <table class='table'>
     <caption><h2>Табель</h2></caption>
 
@@ -94,6 +95,7 @@ if ($result = $mysqli->query($sql)) {
            </tr>
     </tbody>
     </table>
+		</div>
     ");
     $result->free();}
 else {
@@ -109,9 +111,9 @@ else {
 <div class='info'>
         <div class='info__container container'>
           <div class='info__body'>
-            <div class='info__text'>Оплата за час: <?php echo $pph; ?>р</div>
-            <div class='info__text'>Оплата за 8 часов: <?php echo $pph*8; ?>р</div>
-			<div class='info__text'>Всего начислено: <?php echo $pph*$sum_hours; ?>р</div>
+            <p class='info__text'>Оплата за час: <?php echo $pph; ?>р</p>
+            <p class='info__text'>Оплата за 8 часов: <?php echo $pph*8; ?>р</p>
+						<p class='info__text'>Всего начислено: <?php echo $pph*$sum_hours; ?>р</p>
           </div>
     </div>
   </div>
@@ -124,6 +126,7 @@ $sql = "SELECT DATE_FORMAT(`paid`.`date`,'%d.%m.%Y'), `paid`.`amount`, `comments
 if ($result = $mysqli->query($sql)) {
     $sum_paid = 0;
     echo("
+		<div class='table__container container'>
     <table class='table'>
     <caption><h2>Табель</h2></caption>
 
@@ -152,7 +155,8 @@ if ($result = $mysqli->query($sql)) {
 	$sum_paid = $sum_paid + $row[1];
     }
 /*	$sum_text=number_format($sum, 2, '.', ' ');*/
-    echo(" <tr class='table__body-row>
+    echo("
+		<tr class='table__body-row'>
 	<td class='table__body-col'>
 	 Всего:
 	</td>
@@ -160,8 +164,10 @@ if ($result = $mysqli->query($sql)) {
 	 $sum_paid
 	</td>
            </tr>
+
     </tbody>
     </table>
+		</div>
     ");
     $result->free();}
 else {
@@ -169,20 +175,19 @@ else {
     echo("<div class='info'>
         <div class='info__container container'>
           <div class='info__body'>
-            <div class='info__text'>Ошибка выполнения запроса</div>
-            <div class=`info__text'>Сообщение ошибки:'{$mysqli->error}'</div>
+            <p class='info__text'>Ошибка выполнения запроса</p>
+            <p class='info__text'>Сообщение ошибки:'{$mysqli->error}'</p>
           </div>
         </div>
       </div>");}
 ?>
-
-<b>
-Остаток:
-<?php
-echo $pph*$sum_hours - $sum_paid;
-?>
-р.
-</b>
+<div class='info'>
+        <div class='info__container container'>
+          <div class='info__body'>
+            <p class='info__text'>Остаток: <?php echo $pph*$sum_hours - $sum_paid ?>р.</p>
+          </div>
+        </div>
+      </div>
 
 </body>
 </html>
