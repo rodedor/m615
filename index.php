@@ -10,7 +10,7 @@ $sql = "SELECT `id` FROM `worker` WHERE `link`=\"$link\";";
 if ($result = $mysqli->query($sql)) {
 	$row = $result->fetch_array(MYSQLI_NUM);
 	$id = $row[0];		// id работника
-	$result->free();} 
+	$result->free();}
 else {
 	echo("Ошибка выполнения запроса");
 	$mysqli->close();}
@@ -25,7 +25,7 @@ if ($result = $mysqli->query($sql)) {
 	$row = $result->fetch_array(MYSQLI_NUM);
 	$name = $row[0];	// Имя работника
 	$pph = $row[1];		// Ставка его
-	$result->free();} 
+	$result->free();}
 else {
 	echo("Ошибка выполнения запроса");}
 
@@ -34,13 +34,20 @@ else {
 <!DOCTYPE html>
 <html lang="ru">
 <head>
- <meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="Данные по работе">
+	<link rel="stylesheet" href="static/build/styles/app.css">
  <title><?php echo $name;?></title>
- <meta name="description" content="Данные по работе">
 </head>
 
 <body>
-<h1><?php echo $name;?></h1>
+	<header class="header">
+    <div class="header__container container">
+      <h1 class="header__title">Табель для сотрудника <?php echo $name;?></h1>
+    </div>
+  </header>
 
 <?php  // Таблица "Табель" тут формируется
 $sql = "SELECT DATE_FORMAT(`timesheet`.`date`,'%d.%m.%Y'), `timesheet`.`time`, `comments`.`comment` FROM `timesheet` "
@@ -49,58 +56,66 @@ $sql = "SELECT DATE_FORMAT(`timesheet`.`date`,'%d.%m.%Y'), `timesheet`.`time`, `
 if ($result = $mysqli->query($sql)) {
 	$sum_hours = 0;
 	echo("
-	<table border=1>
+	<table class='table'>
 	<caption><h2>Табель</h2></caption>
-	
-	<thead>
-	 <tr> 
-	  <th>Дата</th>
-	  <th>Часы</th>
-	  <th>Примечание</th>
+
+	<thead class='table__header'>
+	 <tr class='table__header-row'>
+	  <th class='table__header-col'>Дата</th>
+	  <th class='table__header-col'>Сумма</th>
+	  <th class='table__header-col'>Примечание</th>
 	 </tr>
 	</thead>
-	
-	<tbody>
+
+	<tbody class='table__body'>
 	");
 	while ($row = $result->fetch_array(MYSQLI_NUM)) {
-		echo(" <tr>
-			<td>
+		echo(" <tr class='table__body-row'>
+			<td class='table__body-col'>
 			 $row[0]
 			</td>
-			<td>
+			<td class='table__body-col'>
 			 $row[1]
 			</td>
-			<td>
+			<td class='table__body-col'>
 			 $row[2]
 			</td>
 		       </tr>");
 		$sum_hours = $sum_hours + $row[1];
 	}
 /*	$sum_text=number_format($sum, 2, '.', ' ');*/
-	echo(" <tr>
-		<td>
+	echo(" <tr class='table__body-row'>
+		<td class='table__body-col'>
 		 Всего:
 		</td>
-		<td colspan=2>
+		<td colspan=2 class='table__body-col text-rigth font-weight-bold'>
 		 $sum_hours
 		</td>
 	       </tr>
 	</tbody>
 	</table>
 	");
-    $result->free();} 
+    $result->free();}
 else {
-	echo("Ошибка выполнения запроса <br>");
-	printf("Сообщение ошибки: <br> %s <br>", $mysqli->error);}
+	echo("<div class='info'>
+        <div class='info__container container'>
+          <div class='info__body'>
+            <div class='info__text'>Ошибка выполнения запроса</div>
+            <div class='info__text'>Сообщение ошибки:'{$mysqli->error}'</div>
+          </div>
+        </div>
+      </div>")
 ?>
-
+<div class='info'>
+        <div class='info__container container'>
+          <div class='info__body'>
+            <div class='info__text'>Оплата за час: <?php echo $pph; ?>р</div>
+            <div class='info__text'>Оплата за 8 часов: <?php echo $pph*8; ?>р</div>
+						<div class='info__text'>Всего начислено: <?php echo $pph*$sum_hours; ?>р</div>
+          </div>
+    </div>
+  </div>
 <br>
-Оплата за час: <?php echo $pph; ?>р
-<br>
-Оплата за 8 часов: <?php echo $pph*8; ?>р
-<br><br>
-<b>Всего начислено: <?php echo $pph*$sum_hours; ?>р</b>
-
 <?php	// Таблица "Выдано" тут формируется
 $sql = "SELECT DATE_FORMAT(`paid`.`date`,'%d.%m.%Y'), `paid`.`amount`, `comments`.`comment` FROM `paid` "
  . "LEFT JOIN (`worker`,`comments`)"
@@ -109,53 +124,59 @@ $sql = "SELECT DATE_FORMAT(`paid`.`date`,'%d.%m.%Y'), `paid`.`amount`, `comments
 if ($result = $mysqli->query($sql)) {
 	$sum_paid = 0;
 	echo("
-	<table border=1>
-	<caption><h2>Выдано</h2></caption>
-	
-	<thead>
-	 <tr> 
-	  <th>Дата</th>
-	  <th>Сумма</th>
-	  <th>Примечание</th>
+	<table class='table'>
+	<caption><h2>Табель</h2></caption>
+
+	<thead class='table__header'>
+	 <tr class='table__header-row'>
+	  <th class='table__header-col'>Дата</th>
+	  <th class='table__header-col'>Сумма</th>
+	  <th class='table__header-col'>Примечание</th>
 	 </tr>
 	</thead>
-	
-	<tbody>
+
+	<tbody class='table__body'>
 	");
 	while ($row = $result->fetch_array(MYSQLI_NUM)) {
-		echo(" <tr>
-			<td>
+		echo(" <tr class='table__body-row'>
+			<td class='table__body-col'>
 			 $row[0]
 			</td>
-			<td>
+			<td class='table__body-col'>
 			 $row[1]
 			</td>
-			<td>
+			<td class='table__body-col'>
 			 $row[2]
 			</td>
 		       </tr>");
 		$sum_paid = $sum_paid + $row[1];
 	}
 /*	$sum_text=number_format($sum, 2, '.', ' ');*/
-	echo(" <tr>
-		<td>
+	echo(" <tr class='table__body-row>
+		<td class='table__body-col'>
 		 Всего:
 		</td>
-		<td colspan=2>
+		<td colspan=2 class='table__body-col text-rigth font-weight-bold'>
 		 $sum_paid
 		</td>
 	       </tr>
 	</tbody>
 	</table>
 	");
-    $result->free();} 
+    $result->free();}
 else {
-	echo("Ошибка выполнения запроса <br>");
-	printf("Сообщение ошибки: <br> %s <br>", $mysqli->error);}
+	echo("<div class='info'>
+        <div class='info__container container'>
+          <div class='info__body'>
+            <div class='info__text'>Ошибка выполнения запроса</div>
+            <div class='info__text'>Сообщение ошибки:'{$mysqli->error}'</div>
+          </div>
+        </div>
+      </div>")}
 ?>
 
 <b>
-Остаток: 
+Остаток:
 <?php
 echo $pph*$sum_hours - $sum_paid;
 ?>

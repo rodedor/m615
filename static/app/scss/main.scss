@@ -1,17 +1,18 @@
 .info {
-	margin: 25px;
+	margin: 25px 0;
 	&__container {
 		display: flex;
 		flex-direction: column;
 		gap: 15px;
+		max-width: 650px;
 	}
 	&__body {
-		max-width: 400px;
+		max-width: 300px;
 		padding: 30px 15px;
 		border-radius: 7px;
-		background-color: #4d5146;
+		background-color: $secondary;
 	}
 	&__text {
-		color: white
+		color: white;
 	}
 }
